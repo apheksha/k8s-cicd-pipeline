@@ -41,21 +41,3 @@ jobs:
 
       - name: Push Docker image
         run: docker push $IMAGE:${{ github.sha }}
-
-
-  deploy:
-    needs: build-push
-    runs-on: ubuntu-latest
-
-    steps:
-      - uses: actions/checkout@v4
-
-      - uses: azure/setup-kubectl@v3
-
-      - name: Configure kubeconfig
-        run: echo "${{ secrets.KUBECONFIG }}" | base64 -d > kube.yaml
-
-      - name: Deploy to Kubernetes
-        run: |
-          kubectl set image deployment/flask-app flask=$IMAGE:${{ github.sha }} --kubeconfig=kube.yaml
-          kubectl rollout status deployment/flask-app --kubeconfig=kube.yaml
