@@ -1,34 +1,28 @@
 apiVersion: apps/v1
 kind: Deployment
-
 metadata:
   name: flask-app
-
 spec:
   replicas: 2
-
   selector:
     matchLabels:
       app: flask-app
-
   strategy:
     type: RollingUpdate
     rollingUpdate:
       maxSurge: 1
       maxUnavailable: 0
-
   template:
     metadata:
       labels:
         app: flask-app
-
     spec:
       containers:
       - name: flask
         image: apheksha/flask-k8s-app:latest
+        imagePullPolicy: Never
         ports:
         - containerPort: 5000
-
         livenessProbe:
           httpGet:
             path: /health
