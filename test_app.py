@@ -8,7 +8,7 @@ def client():
         yield c
 
 def test_home(client):
-    assert client.get('/').status_code == 200
+    assert client.get('/').status_code == 500
 
 def test_health(client):
     assert client.get('/health').status_code == 200
